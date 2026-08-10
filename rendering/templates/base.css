@@ -83,8 +83,19 @@ a { color: var(--accent); }
   display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
 }
+.badge.data-period { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
+
+.why-it-matters {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 4px;
+}
+.why-it-matters .kicker { margin-bottom: 0.4rem; }
+.why-it-matters p { margin: 0; font-size: 0.95rem; }
+.why-it-matters .sources { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+.why-it-matters .sources a { color: var(--muted); }
 
 /* ---- Observable Plot chart embeds ---- */
 .chart-block {

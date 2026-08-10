@@ -13,10 +13,21 @@
   <p class="meta">
     <span class="badge">{{ report.publisher }}</span>
     <span class="badge">{{ report.licence }}</span>
-    &middot; last updated {{ report.last_updated }}
+    {% if report.data_period %}<span class="badge data-period">Data covers {{ report.data_period }}</span>{% endif %}
+    &middot; dataset listing last updated {{ report.last_updated }}
   </p>
 
   <p class="headline">{{ report.narrative.headline }}</p>
+
+  {% if report.narrative.why_it_matters %}
+  <div class="why-it-matters">
+    <div class="kicker">Why this matters</div>
+    <p>{{ report.narrative.why_it_matters }}</p>
+    {% if report.narrative.why_it_matters_sources %}
+    <div class="sources">Related: {% for s in report.narrative.why_it_matters_sources %}<a href="{{ s.url }}">{{ s.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+    {% endif %}
+  </div>
+  {% endif %}
 
   <ul class="observations">
     {% for obs in report.narrative.observations %}

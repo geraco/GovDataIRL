@@ -89,8 +89,19 @@ a { color: var(--accent); }
   display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
 }
+.badge.data-period { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
+
+.why-it-matters {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 4px;
+}
+.why-it-matters .kicker { margin-bottom: 0.4rem; }
+.why-it-matters p { margin: 0; font-size: 0.95rem; }
+.why-it-matters .sources { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+.why-it-matters .sources a { color: var(--muted); }
 
 /* ---- Observable Plot chart embeds ---- */
 .chart-block {
@@ -124,28 +135,41 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
   <p class="meta">
     <span class="badge">Dublinked.ie</span>
     <span class="badge">cc-by</span>
-    &middot; last updated 2025-04-16T09:10:59.386994
+    <span class="badge data-period">Data covers 2014</span>
+    &middot; dataset listing last updated 2025-04-16T09:10:59.386994
   </p>
 
-  <p class="headline">Nine in ten Irish bathing water samples rated 'Excellent' in late May 2014, with Waterford accounting for over a third of all tests</p>
+  <p class="headline">Nine in ten bathing water samples rated excellent in late May 2014, though Waterford sites dominate the snapshot</p>
+
+  
+  <div class="why-it-matters">
+    <div class="kicker">Why this matters</div>
+    <p>Monitoring remains critical as climate patterns shift: heavy rainfall events have become more frequent during bathing seasons, increasing contamination risk from wastewater and agricultural sources. Waterford City and County Council manages 30 bathing areas, reflecting the county's extensive coastline and the importance of safe swimming spots to public health and local tourism throughout the summer season.</p>
+    
+    <div class="sources">Related: <a href="https://www.catchments.ie/epa-publishes-bathing-water-quality-in-ireland-report-for-2025/">EPA publishes Bathing Water Quality in Ireland report for 2025 - Catchments.ie - Catchments.ie</a>, <a href="https://www.epa.ie/news-releases/news-releases-2026/high-bathing-water-quality-maintained-in-2025-despite-increased-pressure-from-heavy-rainfall-.php">High bathing water quality maintained in 2025, despite increased pressure from heavy rainfall | Environmental Protection Agency</a>, <a href="https://www.waterfordcouncil.ie/departments/water/bathing-water/coastline-beaches.htm">Coastline – Waterford City & County Council</a></div>
+    
+  </div>
+  
 
   <ul class="observations">
     
-    <li>90% of the 50 water quality samples achieved 'Excellent' status, with only 3 samples rated 'Poor' and 2 rated 'Good'</li>
+    <li>45 of the 50 samples (90%) were rated excellent for water quality, with only 3 poor and 2 good ratings</li>
     
-    <li>Waterford beaches were sampled far more intensively than other counties, representing 36% of all tests (18 of 50), followed by Galway at 30% (15 of 50) and Dublin at 18% (9 of 50)</li>
+    <li>Waterford accounts for 18 of the 50 samples (36%), more than twice the next largest county, Galway with 15</li>
     
-    <li>E. coli levels were very low in the majority of samples, with 30% (15 of 50) recording concentrations below the detection threshold of 10 colony-forming units per 100ml</li>
+    <li>All 50 samples were collected within a narrow two-day window between 22 May and 26 May 2014, making this a brief snapshot rather than a seasonal overview</li>
     
-    <li>All samples were taken within a narrow five-day window between 22 and 26 May 2014, capturing a snapshot of early-season water quality rather than seasonal trends</li>
+    <li>The most common E. coli reading was below 10 colony-forming units, accounting for 15 of the 50 samples (30%), while intestinal enterococci readings of below 2 appeared in 11 samples (22%)</li>
+    
+    <li>The three poor-quality samples were scattered across different counties (two in Dublin, one in Waterford), indicating isolated rather than systemic issues</li>
     
   </ul>
 
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Excellent' accounts for 90% of all sample_water_quality_status values (45 of 50).</figcaption>
-  <div id="chart-0" class="obs-plot-container" role="img" aria-label="'Excellent' accounts for 90% of all sample_water_quality_status values (45 of 50)."></div>
+  <figcaption class="chart-title">'Excellent' accounts for 90% of all Sample Water Quality Status values (45 of 50).</figcaption>
+  <div id="chart-0" class="obs-plot-container" role="img" aria-label="'Excellent' accounts for 90% of all Sample Water Quality Status values (45 of 50)."></div>
   <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Excellent</td><td class='tabular-nums'>45</td></tr><tr><td>Poor</td><td class='tabular-nums'>3</td></tr><tr><td>Good</td><td class='tabular-nums'>2</td></tr></tbody></table></details>
 </figure>
 <script type="module">
@@ -160,7 +184,7 @@ const plot = Plot.plot({
   marks: [
     Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
     Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
-    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}),
     Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
   ],
 });
@@ -171,8 +195,8 @@ container.append(plot);
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Waterford' accounts for 36% of all county_name values (18 of 50).</figcaption>
-  <div id="chart-1" class="obs-plot-container" role="img" aria-label="'Waterford' accounts for 36% of all county_name values (18 of 50)."></div>
+  <figcaption class="chart-title">'Waterford' accounts for 36% of all County values (18 of 50).</figcaption>
+  <div id="chart-1" class="obs-plot-container" role="img" aria-label="'Waterford' accounts for 36% of all County values (18 of 50)."></div>
   <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Waterford</td><td class='tabular-nums'>18</td></tr><tr><td>Galway</td><td class='tabular-nums'>15</td></tr><tr><td>Dublin</td><td class='tabular-nums'>9</td></tr><tr><td>Cork</td><td class='tabular-nums'>7</td></tr><tr><td>Wicklow</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
 </figure>
 <script type="module">
@@ -187,7 +211,7 @@ const plot = Plot.plot({
   marks: [
     Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
     Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
-    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}),
     Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
   ],
 });
@@ -198,8 +222,8 @@ container.append(plot);
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Waterford City &amp; County Council' accounts for 36% of all local_authority_name values (18 of 50).</figcaption>
-  <div id="chart-2" class="obs-plot-container" role="img" aria-label="'Waterford City &amp; County Council' accounts for 36% of all local_authority_name values (18 of 50)."></div>
+  <figcaption class="chart-title">'Waterford City &amp; County Council' accounts for 36% of all Local Authority values (18 of 50).</figcaption>
+  <div id="chart-2" class="obs-plot-container" role="img" aria-label="'Waterford City &amp; County Council' accounts for 36% of all Local Authority values (18 of 50)."></div>
   <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Waterford City &amp; County Council</td><td class='tabular-nums'>18</td></tr><tr><td>Galway County Council</td><td class='tabular-nums'>15</td></tr><tr><td>Fingal County Council</td><td class='tabular-nums'>9</td></tr><tr><td>Cork County Council</td><td class='tabular-nums'>7</td></tr><tr><td>Wicklow County Council</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
 </figure>
 <script type="module">
@@ -214,7 +238,7 @@ const plot = Plot.plot({
   marks: [
     Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
     Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
-    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}),
     Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
   ],
 });
@@ -224,7 +248,7 @@ container.append(plot);
 
   
 
-  <div class="caveat"><strong>A caveat worth knowing:</strong> This dataset contains only 50 samples collected over five days in late May 2014, making it too limited to assess seasonal variation, long-term trends, or the full range of Ireland's bathing waters</div>
+  <div class="caveat"><strong>A caveat worth knowing:</strong> This dataset contains only 50 samples collected over two days in late May 2014, far too small and time-limited to assess overall bathing season quality or make meaningful comparisons between counties or beaches</div>
 
   <details class="source-method">
     <summary>Source &amp; method</summary>
@@ -234,7 +258,7 @@ container.append(plot);
     <p>Selected automatically — interestingness score 60/100
        (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
        see the project's scoring method for details).</p>
-    <p>Published 2026-08-10T09:49:18.353385+00:00.</p>
+    <p>Published 2026-08-10T10:12:05.281338+00:00.</p>
   </details>
 
   <hr>

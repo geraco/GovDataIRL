@@ -25,6 +25,12 @@ You will be given:
 Rules:
 - Every number you state must come from the profile or the insight list,
   never estimated or invented
+- Never echo a raw column/field name (e.g. "county_name", "STATION ID",
+  "incident_expected_duration"). Translate it into what it actually means
+  in plain English (e.g. "county", "station", "how long the restriction
+  was expected to last"). The insight list already does this for you in
+  most cases — match that style everywhere else, including when you pull
+  additional detail from the raw profile
 - The headline must state a finding, not describe the dataset. Bad:
   "Beef kill figures 2019-2023." Good: "Weekly beef slaughter volatility
   tripled in 2020, then steadily declined."

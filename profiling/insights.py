@@ -7,6 +7,7 @@ historical high/low. Each insight carries a `magnitude` for ranking and a
 what lets the pipeline lead with "what's actually interesting" instead of
 whatever the AI happens to describe first.
 """
+from .naming import humanize_label
 from .profiler import non_date_like_columns
 
 
@@ -48,6 +49,7 @@ def _trend_insights(ts: dict) -> list[dict]:
     if len(values) < 2:
         return out
 
+    label = humanize_label(ts["value_field"])
     first, last = values[0], values[-1]
     if first:
         overall_pct = (last - first) / abs(first) * 100
@@ -55,7 +57,7 @@ def _trend_insights(ts: dict) -> list[dict]:
             "category": "trend", "field": ts["value_field"],
             "magnitude": abs(overall_pct),
             "description": (
-                f"{ts['value_field']} {'rose' if overall_pct >= 0 else 'fell'} "
+                f"{label} {'rose' if overall_pct >= 0 else 'fell'} "
                 f"{abs(round(overall_pct))}% from {periods[0]} to {periods[-1]} "
                 f"({round(first, 2)} → {round(last, 2)})."
             ),
@@ -71,7 +73,7 @@ def _trend_insights(ts: dict) -> list[dict]:
             "category": "trend", "field": ts["value_field"],
             "magnitude": abs(peak_c) * 1.1,  # single-period spikes usually more newsworthy than the overall trend
             "description": (
-                f"The sharpest period-over-period move in {ts['value_field']} was "
+                f"The sharpest period-over-period move in {label} was "
                 f"{'+' if peak_c >= 0 else ''}{round(peak_c)}% at {periods[peak_i]}."
             ),
             "chart_data": {"periods": periods, "values": ts["values"], "value_field": ts["value_field"]},
@@ -82,7 +84,7 @@ def _trend_insights(ts: dict) -> list[dict]:
     out.append({
         "category": "trend", "field": ts["value_field"],
         "magnitude": 5,  # low-priority tiebreaker unless nothing else is going on
-        "description": f"{ts['value_field']} peaked at {round(max_v, 2)} in {periods[max_i]}.",
+        "description": f"{label} peaked at {round(max_v, 2)} in {periods[max_i]}.",
         "chart_data": {"periods": periods, "values": ts["values"], "value_field": ts["value_field"]},
         "annotation_index": max_i,
     })
@@ -99,10 +101,11 @@ def _concentration_insight(col: str, info: dict, row_count: int) -> dict | None:
     share = leader_n / row_count * 100
     if share < 20:  # not concentrated enough to be a "one thing dominates" story
         return None
+    label = humanize_label(col)
     return {
         "category": "concentration", "field": col,
         "magnitude": share,
-        "description": f"'{leader}' accounts for {round(share)}% of all {col} values ({leader_n} of {row_count}).",
+        "description": f"'{leader}' accounts for {round(share)}% of all {label} values ({leader_n} of {row_count}).",
         "chart_data": {"labels": list(top.keys()), "counts": list(top.values()), "field": col},
     }
 
@@ -117,7 +120,7 @@ def _outlier_insight(col: str, info: dict, row_count: int) -> dict | None:
     return {
         "category": "outlier", "field": col,
         "magnitude": ratio + 10,  # data-quality findings are usually genuinely noteworthy
-        "description": f"{n} of {row_count} {col} values ({round(ratio, 1)}%) are statistical outliers (outside 1.5× IQR).",
+        "description": f"{n} of {row_count} {humanize_label(col)} values ({round(ratio, 1)}%) are statistical outliers (outside 1.5× IQR).",
         "chart_data": {"field": col},
     }
 
@@ -125,10 +128,11 @@ def _outlier_insight(col: str, info: dict, row_count: int) -> dict | None:
 def _correlation_insight(pair: dict) -> dict:
     strength = "strong" if abs(pair["correlation"]) >= 0.8 else "moderate"
     direction = "positive" if pair["correlation"] > 0 else "negative"
+    a_label, b_label = humanize_label(pair["a"]), humanize_label(pair["b"])
     return {
         "category": "correlation", "field": f"{pair['a']}__{pair['b']}",
         "magnitude": abs(pair["correlation"]) * 60,
-        "description": f"{pair['a']} and {pair['b']} show a {strength} {direction} correlation (r={pair['correlation']}).",
+        "description": f"{a_label} and {b_label} show a {strength} {direction} correlation (r={pair['correlation']}).",
         "chart_data": {"x_field": pair["a"], "y_field": pair["b"]},
     }
 
@@ -154,11 +158,12 @@ def _ranking_insights(df, profile: dict) -> list[dict]:
         if len(agg) < 2 or agg.iloc[0] <= 0:
             continue
         gap_pct = (agg.iloc[0] - agg.iloc[1]) / agg.iloc[0] * 100
+        value_label, cat_label = humanize_label(value_col), humanize_label(cat_col)
         out.append({
             "category": "ranking", "field": f"{cat_col}__{value_col}",
             "magnitude": gap_pct * 0.8,
             "description": (
-                f"By total {value_col}, '{agg.index[0]}' leads all {cat_col} categories "
+                f"By total {value_label}, '{agg.index[0]}' leads all {cat_label} categories "
                 f"with {round(agg.iloc[0], 1)}, {round(gap_pct)}% ahead of runner-up '{agg.index[1]}' "
                 f"({round(agg.iloc[1], 1)})."
             ),

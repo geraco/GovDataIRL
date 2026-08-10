@@ -89,8 +89,19 @@ a { color: var(--accent); }
   display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
 }
+.badge.data-period { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
+
+.why-it-matters {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 4px;
+}
+.why-it-matters .kicker { margin-bottom: 0.4rem; }
+.why-it-matters p { margin: 0; font-size: 0.95rem; }
+.why-it-matters .sources { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+.why-it-matters .sources a { color: var(--muted); }
 
 /* ---- Observable Plot chart embeds ---- */
 .chart-block {
@@ -126,7 +137,7 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
     <p class="tagline">Every report is generated from a live dataset, statistically profiled, and fact-checked against real numbers before publishing.</p>
   </div>
   <div class="pipeline-status">
-    <div>Last run: 2026-08-10 09:52 UTC</div>
+    <div>Last run: 2026-08-10 10:12 UTC</div>
     <div class="links"><a href="feed.json">JSON</a> &middot; <a href="feed.xml">RSS</a></div>
   </div>
 </div>
@@ -137,12 +148,12 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
     
     <div class="facet-btn" data-agency="Dublinked.ie">
       <div class="name mono">Dublinked.ie</div>
-      <div class="count">2 reports</div>
+      <div class="count">6 reports</div>
     </div>
     
     <div class="facet-btn" data-agency="Dublin City Council">
       <div class="name mono">Dublin City Council</div>
-      <div class="count">3 reports</div>
+      <div class="count">7 reports</div>
     </div>
     
     <div class="facet-btn" data-agency="Department of Agriculture, Food and the Marine">
@@ -159,6 +170,190 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
 </div>
 
 <div class="archive-list" id="archive-list">
+  
+  <div class="archive-item" data-agency="Dublinked.ie" data-score="80" data-published="2026-08-10T10:12:53.528814+00:00">
+    <a class="title" href="reports/2026-08-10-bathing-water-api-6.html">86% of Irish bathing sites achieved excellent water quality in 2025, with Mayo accounting for 28% of all monitored beaches</a>
+    <div class="row">
+      <span class="pub-badge">Dublinked.ie</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;481d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublinked.ie" data-score="60" data-published="2026-08-10T10:12:05.281338+00:00">
+    <a class="title" href="reports/2026-08-10-bathing-water-api-5.html">Nine in ten bathing water samples rated excellent in late May 2014, though Waterford sites dominate the snapshot</a>
+    <div class="row">
+      <span class="pub-badge">Dublinked.ie</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 60/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;481d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T10:11:29.529560+00:00">
+    <a class="title" href="reports/2026-08-10-dublinbikes-api-dcc-2.html">Dublin's bike-share network shrank sharply in early 2018, with total docking capacity falling 23% in one month</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;32d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublinked.ie" data-score="65" data-published="2026-08-10T10:10:51.483824+00:00">
+    <a class="title" href="reports/2026-08-10-bathing-water-api-4.html">Expected duration of bathing restrictions fell 65% between May and August 2026, driven by a shift from algal bloom to rainfall warnings</a>
+    <div class="row">
+      <span class="pub-badge">Dublinked.ie</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 65/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;481d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T10:09:42.464627+00:00">
+    <a class="title" href="reports/2026-08-10-moby-bikes-api-3.html">Nearly all Moby bikes are in standard service, but one in five locations show anomalous GPS readings</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;235d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T10:08:30.653389+00:00">
+    <a class="title" href="reports/2026-08-10-pedestrian-and-cycle-counter-api-for-dublin-region-2.html">Pedestrians dominate Dublin's sensor network, but location data quality issues affect more than one in five counters</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;416d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T10:04:54.542771+00:00">
+    <a class="title" href="reports/2026-08-10-moby-bikes-api-2.html">Almost all Moby e-bikes in Dublin operated under a single general category, with one in five location readings flagged as statistical outliers</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;235d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublinked.ie" data-score="65" data-published="2026-08-10T10:02:53.771068+00:00">
+    <a class="title" href="reports/2026-08-10-bathing-water-api-3.html">Expected duration of bathing restrictions fell 65% from late May to early August 2026, driven by a shift from algal bloom to rainfall warnings</a>
+    <div class="row">
+      <span class="pub-badge">Dublinked.ie</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 65/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;481d</span>
+    </div>
+  </div>
   
   <div class="archive-item" data-agency="Dublinked.ie" data-score="80" data-published="2026-08-10T09:52:13.352585+00:00">
     <a class="title" href="reports/2026-08-10-bathing-water-api-2.html">86% of Irish designated bathing areas achieved Excellent water quality in 2025, down from 92% in 2024</a>

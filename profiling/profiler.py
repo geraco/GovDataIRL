@@ -14,8 +14,18 @@ NON_MEASURE_NAME_MARKERS = (
     "year", "week", "date", "period", "month", "day",
     "easting", "northing", "lat", "lon", "latitude", "longitude", "geo",
 )
-ID_LIKE_PATTERN = re.compile(r"(^|[_\s])id(s)?($|[_\s])", re.IGNORECASE)  # "id", "station id", "_id", "object ids"
+# Three separate id-shapes seen in real data.gov.ie resources: underscore/space
+# separated ("STATION ID", "object_id"), camelCase suffix ("BikeID", "StationId"),
+# and spelled out ("BikeIdentifier"). All three have hit real bugs — a column
+# named this way is a row identifier, never a measure to aggregate/trend/correlate.
+ID_LIKE_WORD_PATTERN = re.compile(r"(^|[_\s])id(s)?($|[_\s])", re.IGNORECASE)
+ID_LIKE_CAMEL_PATTERN = re.compile(r"[a-z](id)$")
 ADMIN_TIMESTAMP_MARKERS = ("last_updated", "modified", "created", "timestamp", "updated_at", "edited")
+
+
+def _is_id_like(col: str) -> bool:
+    return bool(ID_LIKE_WORD_PATTERN.search(col)) or bool(ID_LIKE_CAMEL_PATTERN.search(col.lower())) \
+        or "identifier" in col.lower()
 
 
 def non_date_like_columns(columns: list[str]) -> list[str]:
@@ -23,13 +33,13 @@ def non_date_like_columns(columns: list[str]) -> list[str]:
     an identifier, or a geographic coordinate — these aren't measures, and
     picking one as a chart's value axis produces a nonsense chart (real bug
     hit repeatedly: YEAR resampled as a value, easting plotted as a trend,
-    "STATION ID" aggregated and reported as if it measured something). No
-    fallback to the unfiltered list on purpose — a dataset with no real
-    measure column should get no trend/ranking insight rather than a
-    fabricated one built from an ID or coordinate."""
+    "STATION ID"/"BikeID"/"BikeIdentifier" aggregated and reported as if they
+    measured something). No fallback to the unfiltered list on purpose — a
+    dataset with no real measure column should get no trend/ranking insight
+    rather than a fabricated one built from an ID or coordinate."""
     return [c for c in columns
             if not any(k in c.lower() for k in NON_MEASURE_NAME_MARKERS)
-            and not ID_LIKE_PATTERN.search(c)]
+            and not _is_id_like(c)]
 
 
 def _coerce_temporal(series: pd.Series) -> pd.Series | None:
@@ -123,6 +133,20 @@ def _resample(df: pd.DataFrame, temporal_col: str, value_col: str) -> dict:
         "values": [_num(v) for v in agg.values],
         "period_over_period_pct_change": [_num(v) for v in pct_change.values],
     }
+
+
+def data_period_label(profile: dict) -> str | None:
+    """The date range the *data itself* covers (from a detected temporal
+    column), not when the dataset listing was last edited — those are often
+    very different (e.g. a 2014 water-quality snapshot re-published in 2025)."""
+    for info in profile["columns"].values():
+        date_range = info.get("date_range")
+        if date_range:
+            start, end = date_range
+            if start[:4] == end[:4]:
+                return start[:4]
+            return f"{start[:4]}–{end[:4]}"
+    return None
 
 
 def _num(v):

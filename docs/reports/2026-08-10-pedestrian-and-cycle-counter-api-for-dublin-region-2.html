@@ -89,8 +89,19 @@ a { color: var(--accent); }
   display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
 }
+.badge.data-period { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
+
+.why-it-matters {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 4px;
+}
+.why-it-matters .kicker { margin-bottom: 0.4rem; }
+.why-it-matters p { margin: 0; font-size: 0.95rem; }
+.why-it-matters .sources { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+.why-it-matters .sources a { color: var(--muted); }
 
 /* ---- Observable Plot chart embeds ---- */
 .chart-block {
@@ -124,22 +135,31 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
   <p class="meta">
     <span class="badge">Dublin City Council</span>
     <span class="badge">cc-by</span>
-    &middot; last updated 2025-06-19T18:31:50.405425
+    
+    &middot; dataset listing last updated 2025-06-19T18:31:50.405425
   </p>
 
-  <p class="headline">Pedestrian counters outnumber cycling-only counters by more than two to one across Dublin's monitoring network</p>
+  <p class="headline">Pedestrians dominate Dublin's sensor network, but location data quality issues affect more than one in five counters</p>
+
+  
+  <div class="why-it-matters">
+    <div class="kicker">Why this matters</div>
+    <p>Dublin City Council has set an ambitious goal that every resident should be within five minutes or 500 metres of a walking or cycling route, making reliable sensor data crucial for planning and evaluating infrastructure. When data quality issues affect more than one in five counters, planners risk making decisions with incomplete or inaccurate evidence about where people actually walk and cycle.</p>
+    
+    <div class="sources">Related: <a href="https://smartdublin.ie/city-scale-ai-enabling-data%E2%80%91driven-active-travel-road-safety-decisions-in-the-region/">City-Scale AI Enabling Data‑Driven Active Travel & Road Safety Decisions - Smart Dublin</a>, <a href="https://www.traffictechnologytoday.com/news/artificial-intelligence-ai/dublin-pilots-ai-digital-twin-to-boost-active-travel.html">Dublin pilots AI digital twin to boost active travel | Traffic Technology Today</a>, <a href="https://www.saferhighways.co.uk/post/dublin-pilots-ai-digital-twin-to-boost-active-travel">Dublin pilots AI digital twin to boost active travel</a></div>
+    
+  </div>
+  
 
   <ul class="observations">
     
-    <li>Pedestrian-only sensors account for 47 of 131 counter records (36%), making them the dominant monitoring type in the network</li>
+    <li>Pedestrian-only counters account for 36% of all sensors (47 of 131), compared to just 20 dedicated cycle counters and 19 combined pedestrian-cycle sensors</li>
     
-    <li>Just 20 counters (15%) monitor cyclists only, while 19 counters track both pedestrians and cyclists together</li>
+    <li>21.4% of longitude values (28 of 131 counters) fall outside normal statistical bounds, suggesting data quality problems with location recording</li>
     
-    <li>Over one-third of counter records (34.35%) have missing location and setup information, indicating incomplete metadata in the API</li>
+    <li>Setup dates show installation surges in specific months: 11 counters were installed on the same date in February 2019, and 9 more on the same date in August 2020, indicating coordinated rollout phases</li>
     
-    <li>The most common installation date was 27 February 2019, when 11 counters were set up, followed by 27 August 2020 with 9 installations</li>
-    
-    <li>Geographic spread shows variation in placement: 28 of 131 longitude values (21.4%) are statistical outliers, suggesting some counters are positioned well outside the typical Dublin city centre cluster</li>
+    <li>Over one-third of all records (34.35%) contain missing data across all five fields, meaning the dataset omits key information for many registered sensors</li>
     
   </ul>
 
@@ -162,7 +182,7 @@ const plot = Plot.plot({
   marks: [
     Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
     Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
-    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}),
     Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
   ],
 });
@@ -197,7 +217,7 @@ container.append(plot);
 
   
 
-  <div class="caveat"><strong>A caveat worth knowing:</strong> Over one-third of records contain missing data across all fields, and the publisher notes existing data quality issues with specific sensors including Baggot Street Upper/Mespil Road/Bank</div>
+  <div class="caveat"><strong>A caveat worth knowing:</strong> The publisher acknowledges existing data quality issues with some sensors (specifically naming Baggot Street Upper/Mespil Road/Bank), and the high proportion of statistical outliers in longitude values suggests broader location accuracy problems that may affect mapping or spatial analysis</div>
 
   <details class="source-method">
     <summary>Source &amp; method</summary>
@@ -207,7 +227,7 @@ container.append(plot);
     <p>Selected automatically — interestingness score 80/100
        (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
        see the project's scoring method for details).</p>
-    <p>Published 2026-08-10T09:48:27.932265+00:00.</p>
+    <p>Published 2026-08-10T10:08:30.653389+00:00.</p>
   </details>
 
   <hr>

@@ -6,9 +6,11 @@ the template; here: annotated trend line, lollipop ranking/concentration,
 histogram distribution, quadrant-free scatter for relationships). Binding
 chart data straight from the real dataframe means a hallucinated field name
 is structurally impossible — the AI never chooses fields, only which
-insights matter (see analyst/pass_b_charts.py).
+insights matter (see analyst/pipeline.py).
 """
 import pandas as pd
+
+from profiling.naming import humanize_label
 
 MAX_CHARTS = 3
 
@@ -41,7 +43,7 @@ def _build_spec(insight: dict, df: pd.DataFrame) -> dict | None:
             "chart_type": "line_annotated", "title": _title(insight),
             "data": {"periods": cd["periods"], "values": cd["values"]},
             "annotation_index": insight.get("annotation_index", len(cd["values"]) - 1),
-            "value_field": cd["value_field"],
+            "value_field": humanize_label(cd["value_field"]),
         }
 
     if cat in ("ranking", "concentration"):
@@ -62,7 +64,7 @@ def _build_spec(insight: dict, df: pd.DataFrame) -> dict | None:
         return {
             "chart_type": "scatter", "title": _title(insight),
             "data": {"x": pair[a].tolist(), "y": pair[b].tolist()},
-            "x_field": a, "y_field": b,
+            "x_field": humanize_label(a), "y_field": humanize_label(b),
         }
 
     if cat == "outlier":
@@ -72,6 +74,6 @@ def _build_spec(insight: dict, df: pd.DataFrame) -> dict | None:
         values = pd.to_numeric(df[field], errors="coerce").dropna().tolist()
         if len(values) < 5:
             return None
-        return {"chart_type": "histogram", "title": _title(insight), "data": {"values": values}, "field": field}
+        return {"chart_type": "histogram", "title": _title(insight), "data": {"values": values}, "field": humanize_label(field)}
 
     return None

@@ -36,7 +36,7 @@ def _unique_slug(base_slug: str) -> str:
 
 def build_report(pipeline_result: dict, source_notes: dict, chart_tags: list[str],
                   dataset_title: str, dataset_page_url: str, interestingness_score: int,
-                  resource_id: str) -> dict:
+                  resource_id: str, data_period: str | None = None) -> dict:
     narrative = pipeline_result["narrative"]
     now = datetime.now(timezone.utc)
     slug = _unique_slug(f"{now.strftime('%Y-%m-%d')}-{_slugify(dataset_title)}")
@@ -50,6 +50,7 @@ def build_report(pipeline_result: dict, source_notes: dict, chart_tags: list[str
         "publisher": source_notes["publisher"],
         "licence": source_notes["licence"],
         "last_updated": source_notes["last_updated"] or "unknown",
+        "data_period": data_period,
         "source_url": source_notes["url"],
         "interestingness_score": interestingness_score,
         "narrative": narrative,

@@ -12,7 +12,7 @@ from connectors import NotNarrable, fetch as connector_fetch
 from db.store import connect, init_db, upsert
 from discovery.discover import pick_dataset, refresh_candidate_pool
 from profiling.insights import detect_insights
-from profiling.profiler import profile_dataframe
+from profiling.profiler import data_period_label, profile_dataframe
 from publish.build_site import build_report
 from publish.notify import notify_published
 from rendering.charts import render_all
@@ -56,6 +56,7 @@ def _try_publish(candidate: dict) -> bool:
             dataset_title=candidate["title"], dataset_page_url=dataset_page_url,
             interestingness_score=candidate["interestingness_score"],
             resource_id=candidate["resource_id"],
+            data_period=data_period_label(profile),
         )
         _log_run(candidate["resource_id"], "success", published_report_id=report["report_id"])
         notify_published(report)

@@ -89,8 +89,19 @@ a { color: var(--accent); }
   display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
   padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
 }
+.badge.data-period { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
+
+.why-it-matters {
+  margin: 1.5rem 0; padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 4px;
+}
+.why-it-matters .kicker { margin-bottom: 0.4rem; }
+.why-it-matters p { margin: 0; font-size: 0.95rem; }
+.why-it-matters .sources { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+.why-it-matters .sources a { color: var(--muted); }
 
 /* ---- Observable Plot chart embeds ---- */
 .chart-block {
@@ -124,46 +135,58 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
   <p class="meta">
     <span class="badge">Dublinked.ie</span>
     <span class="badge">cc-by</span>
-    &middot; last updated 2025-04-16T09:10:59.386994
+    <span class="badge data-period">Data covers 2026</span>
+    &middot; dataset listing last updated 2025-04-16T09:10:59.386994
   </p>
 
-  <p class="headline">86% of Irish designated bathing areas achieved Excellent water quality in 2025, down from 92% in 2024</p>
+  <p class="headline">Expected duration of bathing restrictions fell 65% between May and August 2026, driven by a shift from algal bloom to rainfall warnings</p>
+
+  
+  <div class="why-it-matters">
+    <div class="kicker">Why this matters</div>
+    <p>This follows a summer when heavy rainfall repeatedly closed Dublin beaches, while concerns about toxic algal blooms in midlands lakes also prompted swimming warnings. The shift suggests improved conditions for bathers as the season progressed, though both types of pollution remain ongoing public health concerns around Irish bathing waters.</p>
+    
+    <div class="sources">Related: <a href="https://www.irishtimes.com/ireland/dublin/2026/06/07/swimmers-warned-off-nine-popular-dublin-bathing-spots-until-next-week/">Swimmers warned off nine popular Dublin bathing spots until next week – The Irish Times</a>, <a href="https://www.rte.ie/news/regional/2026/0607/1577213-beaches-dublin/">Four Dublin swimming spots closed over poor water quality</a>, <a href="https://www.westmeathindependent.ie/2026/07/22/council-issues-no-swim-advice-following-concerns-over-toxic-algae-in-lough-ree/">Council issues ‘no swim’ advice following concerns over toxic algae in Lough Ree | Westmeath Independent</a></div>
+    
+  </div>
+  
 
   <ul class="observations">
     
-    <li>43 of 50 designated bathing areas were classified as Excellent Quality in 2025, down from 46 of 50 in 2024</li>
+    <li>The expected duration of bathing restrictions dropped from 14 days in May 2026 to 4.83 days by August 2026, a 65% decline</li>
     
-    <li>Mayo has the highest concentration of designated bathing areas with 14 of the 50 monitored sites (28%)</li>
+    <li>Mayo County Council accounted for 71% of all active bathing restrictions (5 of 7), with all five Mayo incidents lasting 5 days and linked to heavy rainfall warnings</li>
     
-    <li>46 of 50 sites face short-term pollution risks that can trigger temporary swimming restrictions</li>
+    <li>The single longest restriction—14 days at Keeldra Lough in Leitrim—was caused by algal bloom rather than rainfall, and accounted for 180% more total restricted days than any other incident</li>
     
-    <li>Only one site, Lilliput on Lough Ennell, had a Sufficient Quality rating in the current year, while 6 sites achieved Good Quality and the remainder Excellent</li>
-    
-    <li>All 50 sites are classified as 'Identified Beach' type and monitored between June 1st and September 15th during the official bathing season</li>
+    <li>Six of the seven incidents were about potential water quality deterioration due to expected heavy rainfall (five prior warnings and one bathing prohibition), while only one was a full bathing prohibition due to algal bloom</li>
     
   </ul>
 
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Excellent Quality' accounts for 92% of all year1_annual_water_quality_classification values (46 of 50).</figcaption>
-  <div id="chart-0" class="obs-plot-container" role="img" aria-label="'Excellent Quality' accounts for 92% of all year1_annual_water_quality_classification values (46 of 50)."></div>
-  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Excellent Quality</td><td class='tabular-nums'>46</td></tr><tr><td>Good Quality</td><td class='tabular-nums'>2</td></tr><tr><td>Sufficient Quality</td><td class='tabular-nums'>1</td></tr><tr><td>Not classified</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
+  <figcaption class="chart-title">The sharpest period-over-period move in Incident Expected Duration was -65% at 2026-08-31.</figcaption>
+  <div id="chart-0" class="obs-plot-container" role="img" aria-label="The sharpest period-over-period move in Incident Expected Duration was -65% at 2026-08-31."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Period</th><th>Incident Expected Duration</th></tr></thead><tbody><tr><td>2026-05-31</td><td class='tabular-nums'>14.0</td></tr><tr><td>2026-08-31</td><td class='tabular-nums'>4.8333</td></tr></tbody></table></details>
 </figure>
 <script type="module">
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
-const data = [{"label": "Excellent Quality", "value": 46}, {"label": "Good Quality", "value": 2}, {"label": "Sufficient Quality", "value": 1}, {"label": "Not classified", "value": 1}];
+const data = [{"period": "2026-05-31", "value": 14.0}, {"period": "2026-08-31", "value": 4.8333}];
+const annIndex = 1;
 const container = document.getElementById("chart-0");
 const width = Math.min(820, container.clientWidth || 680);
 const plot = Plot.plot({
-  width, height: Math.max(120, data.length * 34), marginLeft: 200,
-  x: {label: "value", grid: true}, y: {label: null},
+  width, height: 320, marginLeft: 56, marginBottom: 40,
+  x: {label: null, type: "point"}, y: {label: "Incident Expected Duration", grid: true},
   marks: [
-    Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
-    Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
-    Plot.text(data, {y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}),
-    Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
+    Plot.lineY(data, {x: "period", y: "value", stroke: "#8B3A2E", strokeWidth: 2.2}),
+    Plot.dot(data, {x: "period", y: "value", r: (d, i) => i === annIndex ? 5 : 2.5,
+                     fill: (d, i) => i === annIndex ? "#8B3A2E" : "#6B6B63"}),
+    Plot.text(data.filter((d, i) => i === annIndex), {x: "period", y: "value", text: d => d.value,
+               dy: -14, fontWeight: 600, fill: "#8B3A2E"}),
+    Plot.tip(data, Plot.pointerX({x: "period", y: "value", title: d => `${d.period}: ${d.value}`})),
   ],
 });
 container.append(plot);
@@ -173,14 +196,14 @@ container.append(plot);
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Excellent Quality' accounts for 90% of all year2_annual_water_quality_classification values (45 of 50).</figcaption>
-  <div id="chart-1" class="obs-plot-container" role="img" aria-label="'Excellent Quality' accounts for 90% of all year2_annual_water_quality_classification values (45 of 50)."></div>
-  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Excellent Quality</td><td class='tabular-nums'>45</td></tr><tr><td>Good Quality</td><td class='tabular-nums'>4</td></tr><tr><td>Poor Quality</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
+  <figcaption class="chart-title">'Mayo' accounts for 71% of all County values (5 of 7).</figcaption>
+  <div id="chart-1" class="obs-plot-container" role="img" aria-label="'Mayo' accounts for 71% of all County values (5 of 7)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Mayo</td><td class='tabular-nums'>5</td></tr><tr><td>Galway</td><td class='tabular-nums'>1</td></tr><tr><td>Leitrim</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
 </figure>
 <script type="module">
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
-const data = [{"label": "Excellent Quality", "value": 45}, {"label": "Good Quality", "value": 4}, {"label": "Poor Quality", "value": 1}];
+const data = [{"label": "Mayo", "value": 5}, {"label": "Galway", "value": 1}, {"label": "Leitrim", "value": 1}];
 const container = document.getElementById("chart-1");
 const width = Math.min(820, container.clientWidth || 680);
 const plot = Plot.plot({
@@ -200,14 +223,14 @@ container.append(plot);
   
   
 <figure class="chart-block">
-  <figcaption class="chart-title">'Excellent Quality' accounts for 90% of all year3_annual_water_quality_classification values (45 of 50).</figcaption>
-  <div id="chart-2" class="obs-plot-container" role="img" aria-label="'Excellent Quality' accounts for 90% of all year3_annual_water_quality_classification values (45 of 50)."></div>
-  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Excellent Quality</td><td class='tabular-nums'>45</td></tr><tr><td>Good Quality</td><td class='tabular-nums'>4</td></tr><tr><td>Poor Quality</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
+  <figcaption class="chart-title">'Mayo County Council' accounts for 71% of all Local Authority values (5 of 7).</figcaption>
+  <div id="chart-2" class="obs-plot-container" role="img" aria-label="'Mayo County Council' accounts for 71% of all Local Authority values (5 of 7)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Mayo County Council</td><td class='tabular-nums'>5</td></tr><tr><td>Galway City Council</td><td class='tabular-nums'>1</td></tr><tr><td>Leitrim County Council</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
 </figure>
 <script type="module">
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
-const data = [{"label": "Excellent Quality", "value": 45}, {"label": "Good Quality", "value": 4}, {"label": "Poor Quality", "value": 1}];
+const data = [{"label": "Mayo County Council", "value": 5}, {"label": "Galway City Council", "value": 1}, {"label": "Leitrim County Council", "value": 1}];
 const container = document.getElementById("chart-2");
 const width = Math.min(820, container.clientWidth || 680);
 const plot = Plot.plot({
@@ -226,17 +249,17 @@ container.append(plot);
 
   
 
-  <div class="caveat"><strong>A caveat worth knowing:</strong> This dataset covers only 50 officially designated bathing areas and does not represent all swimming locations in Ireland; water quality at unmonitored beaches and lakes is unknown</div>
+  <div class="caveat"><strong>A caveat worth knowing:</strong> This sample captures just 7 incidents over three months in 2026; it represents only active restrictions at the time of data extraction and does not reflect seasonal patterns, full-year frequency, or historical trends</div>
 
   <details class="source-method">
     <summary>Source &amp; method</summary>
     <p>Dataset on data.gov.ie: <a href="https://data.gov.ie/dataset/beaches-api">https://data.gov.ie/dataset/beaches-api</a></p>
-    <p>API endpoint used: <code>https://data.epa.ie/bw/api/v1/locations</code></p>
+    <p>API endpoint used: <code>https://data.epa.ie/bw/api/v1/alerts</code></p>
     <p>Licence: cc-by</p>
-    <p>Selected automatically — interestingness score 80/100
+    <p>Selected automatically — interestingness score 65/100
        (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
        see the project's scoring method for details).</p>
-    <p>Published 2026-08-10T09:52:13.352585+00:00.</p>
+    <p>Published 2026-08-10T10:10:51.483824+00:00.</p>
   </details>
 
   <hr>
