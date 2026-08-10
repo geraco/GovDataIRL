@@ -4,6 +4,7 @@
     python run.py --no-refresh  # skip the pool refresh (use cached candidates)
 """
 import sys
+import traceback
 import uuid
 from datetime import datetime, timezone
 
@@ -61,9 +62,15 @@ def _try_publish(candidate: dict) -> bool:
         _log_run(candidate["resource_id"], "success", published_report_id=report["report_id"])
         notify_published(report)
         return True
-    except (NotNarrable, RuntimeError, ValueError) as e:
-        _log_run(candidate["resource_id"], "failed", failure_reason=str(e))
-        print(f"[run] failed on {candidate['title']}: {e}")
+    except Exception as e:
+        # Deliberately broad: a candidate-specific failure (bad data, a
+        # hallucinated tool call, an API error) must never crash the whole
+        # run — log it, let the caller re-roll or skip cleanly (spec §10).
+        # Print the full traceback so CI logs stay debuggable even though
+        # the run itself degrades gracefully instead of crashing.
+        _log_run(candidate["resource_id"], "failed", failure_reason=f"{type(e).__name__}: {e}")
+        print(f"[run] failed on {candidate['title']}: {type(e).__name__}: {e}")
+        traceback.print_exc()
         return False
 
 
@@ -88,12 +95,13 @@ def main():
     reroll = pick_dataset()
     if reroll is None or reroll["resource_id"] == candidate["resource_id"]:
         print("[run] no alternative candidate available — skipping this run")
-        return
+        sys.exit(1)  # still flag the run as failed in CI — this is worth noticing, not silently swallowing
 
     if _try_publish(reroll):
         print("[run] done (after re-roll).")
     else:
         print("[run] re-roll also failed — skipping this run, no broken report published")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
