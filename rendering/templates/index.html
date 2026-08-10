@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ site_title }}</title>
+<style>{{ css }}</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div>
+    <div class="kicker accent">Automated Data Journalism</div>
+    <h1>{{ site_title }}</h1>
+    <p class="tagline">Every report is generated from a live dataset, statistically profiled, and fact-checked against real numbers before publishing.</p>
+  </div>
+  <div class="pipeline-status">
+    <div>Last run: {{ last_run_at or "never" }}</div>
+    <div class="links"><a href="feed.json">JSON</a> &middot; <a href="feed.xml">RSS</a></div>
+  </div>
+</div>
+
+<div class="catalogue-section">
+  <div class="kicker">Browse the catalogue &middot; by source agency</div>
+  <div class="facet-row" id="agency-facets">
+    {% for a in agencies %}
+    <div class="facet-btn" data-agency="{{ a.name }}">
+      <div class="name mono">{{ a.name }}</div>
+      <div class="count">{{ a.count }} report{{ 's' if a.count != 1 else '' }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="sort-row">
+    <span class="active" data-sort="newest">SORT: NEWEST</span>
+    <span data-sort="rigorous">MOST RIGOROUS</span>
+  </div>
+</div>
+
+<div class="archive-list" id="archive-list">
+  {% for r in reports %}
+  <div class="archive-item" data-agency="{{ r.publisher }}" data-score="{{ r.interestingness_score or 0 }}" data-published="{{ r.published_at }}">
+    <a class="title" href="reports/{{ r.slug }}.html">{{ r.headline }}</a>
+    <div class="row">
+      <span class="pub-badge">{{ r.publisher }}</span>
+      <span>{{ r.published_at_date }}</span>
+      <span class="conf-dots" title="Interestingness score: {{ r.interestingness_score or 0 }}/100">
+        CONF
+        {% for i in range(5) %}
+        <span class="dot {{ 'on' if r.conf_dots and i < r.conf_dots else '' }}"></span>
+        {% endfor %}
+      </span>
+      <span class="freshness {{ r.freshness_class }}">dataset &Delta;{{ r.freshness_days if r.freshness_days is not none else '?' }}d</span>
+    </div>
+  </div>
+  {% else %}
+  <p class="meta">No reports published yet.</p>
+  {% endfor %}
+</div>
+
+<script>
+(function () {
+  var list = document.getElementById('archive-list');
+  var items = Array.prototype.slice.call(list.querySelectorAll('.archive-item'));
+  var facets = document.getElementById('agency-facets');
+  var sortLabels = document.querySelectorAll('.sort-row span');
+  var activeAgency = null;
+
+  function applyFilterAndSort(sortKey) {
+    items.forEach(function (el) {
+      el.style.display = (!activeAgency || el.dataset.agency === activeAgency) ? '' : 'none';
+    });
+    var visible = items.filter(function (el) { return el.style.display !== 'none'; });
+    visible.sort(function (a, b) {
+      if (sortKey === 'rigorous') return (+b.dataset.score) - (+a.dataset.score);
+      return b.dataset.published.localeCompare(a.dataset.published);
+    });
+    visible.forEach(function (el) { list.appendChild(el); });
+  }
+
+  sortLabels.forEach(function (label) {
+    label.addEventListener('click', function () {
+      sortLabels.forEach(function (l) { l.classList.remove('active'); });
+      label.classList.add('active');
+      applyFilterAndSort(label.dataset.sort);
+    });
+  });
+
+  if (facets) {
+    facets.querySelectorAll('.facet-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeAgency = (activeAgency === btn.dataset.agency) ? null : btn.dataset.agency;
+        facets.querySelectorAll('.facet-btn').forEach(function (b) {
+          b.style.background = (b.dataset.agency === activeAgency) ? 'var(--bg)' : '#fff';
+        });
+        var current = document.querySelector('.sort-row span.active');
+        applyFilterAndSort(current ? current.dataset.sort : 'newest');
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

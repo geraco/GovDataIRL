@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ report.headline }} — {{ site_title }}</title>
+<style>{{ css }}</style>
+</head>
+<body>
+<div class="report-wrap">
+  <p class="meta"><a href="../index.html">&larr; {{ site_title }}</a></p>
+  <h1>{{ report.dataset_title }}</h1>
+  <p class="meta">
+    <span class="badge">{{ report.publisher }}</span>
+    <span class="badge">{{ report.licence }}</span>
+    &middot; last updated {{ report.last_updated }}
+  </p>
+
+  <p class="headline">{{ report.narrative.headline }}</p>
+
+  <ul class="observations">
+    {% for obs in report.narrative.observations %}
+    <li>{{ obs }}</li>
+    {% endfor %}
+  </ul>
+
+  {% for chart in report.chart_tags %}
+  {{ chart | safe }}
+  {% endfor %}
+
+  <div class="caveat"><strong>A caveat worth knowing:</strong> {{ report.narrative.caveat }}</div>
+
+  <details class="source-method">
+    <summary>Source &amp; method</summary>
+    <p>Dataset on data.gov.ie: <a href="{{ report.dataset_page_url }}">{{ report.dataset_page_url }}</a></p>
+    <p>API endpoint used: <code>{{ report.source_url }}</code></p>
+    <p>Licence: {{ report.licence }}</p>
+    <p>Selected automatically — interestingness score {{ report.interestingness_score }}/100
+       (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
+       see the project's scoring method for details).</p>
+    <p>Published {{ report.published_at }}.</p>
+  </details>
+
+  <hr>
+  <p class="meta">Generated automatically by {{ site_title }} — every quantitative claim above
+     was checked against a computed value before publishing.</p>
+</div>
+</body>
+</html>

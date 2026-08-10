@@ -1,0 +1,97 @@
+:root {
+  --bg: #FAFAF7;
+  --fg: #1A1A18;
+  --muted: #6B6B63;
+  --accent: {{ accent }};
+  --rule: #E4E2DA;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: "Inter", -apple-system, sans-serif;
+  line-height: 1.6; margin: 0;
+}
+.wrap { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+h1, h2, .headline {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 700; line-height: 1.2;
+}
+a { color: var(--accent); }
+.kicker {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+}
+.kicker.accent { color: var(--accent); }
+.mono { font-family: "IBM Plex Mono", monospace; }
+
+/* ---- site header (shared by index + report) ---- */
+.site-header {
+  max-width: 940px; margin: 0 auto; padding: 2.5rem 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;
+}
+.site-header h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+.site-header .tagline { color: var(--muted); font-size: 0.95rem; max-width: 520px; margin: 0; }
+.pipeline-status {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--muted);
+  text-align: right; white-space: nowrap;
+}
+.pipeline-status .links { margin-top: 0.6em; }
+.pipeline-status .links a { color: var(--muted); }
+
+/* ---- archive: facets ---- */
+.catalogue-section { max-width: 940px; margin: 0 auto; padding: 1.75rem 1.5rem 1.25rem; border-bottom: 1px solid var(--rule); }
+.facet-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.facet-btn {
+  flex: 1 1 120px; min-width: 120px; padding: 0.9em 1em;
+  border: 1px solid var(--rule); background: #fff; color: var(--fg);
+}
+.facet-btn .name { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; font-weight: 500; }
+.facet-btn .count { font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; opacity: 0.7; margin-top: 0.3em; }
+.sort-row { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.25rem; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; }
+.sort-row span { cursor: pointer; color: var(--muted); }
+.sort-row span.active { color: var(--fg); text-decoration: underline; }
+
+/* ---- archive: list ---- */
+.archive-list { max-width: 940px; margin: 0 auto; padding: 0.25rem 1.5rem 3rem; }
+.archive-item { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+.archive-item a.title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  line-height: 1.3; color: var(--fg); text-decoration: none;
+}
+.archive-item a.title:hover { color: var(--accent); }
+.archive-item .row {
+  display: flex; gap: 0.9em; align-items: center; margin-top: 0.45em; flex-wrap: wrap;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--muted);
+}
+.pub-badge { border: 1px solid var(--rule); border-radius: 999px; padding: 0.15em 0.65em; }
+.conf-dots { display: flex; gap: 2px; align-items: center; }
+.conf-dots .dot { width: 6px; height: 6px; border-radius: 1px; display: inline-block; background: var(--rule); }
+.conf-dots .dot.on { background: var(--accent); }
+.freshness { font-weight: 500; }
+.freshness.fresh { color: #3A7A5E; }
+.freshness.aging { color: #B08A2E; }
+.freshness.stale { color: var(--accent); }
+
+/* ---- report page ---- */
+.report-wrap { max-width: 680px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+.report-wrap h1 { font-size: 2rem; margin: 0.2em 0 0.4em; }
+.report-wrap .headline { font-size: 1.4rem; color: var(--accent); margin: 1.2em 0 0.6em; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+.meta a { color: var(--muted); }
+.badge {
+  display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
+}
+.observations { padding-left: 1.2em; }
+.observations li { margin: 0.6em 0; }
+.report-chart { width: 100%; max-width: none; margin: 2rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2rem 0; }
+@media (max-width: 760px) { .report-chart { margin: 2rem 0; } }
+.caveat {
+  border-left: 3px solid var(--accent); padding: 0.6em 1em;
+  background: color-mix(in srgb, var(--accent) 6%, transparent); margin: 2rem 0; font-size: 0.95rem;
+}
+details.source-method { margin-top: 2rem; font-size: 0.9rem; color: var(--muted); }
+details.source-method summary { cursor: pointer; color: var(--fg); font-weight: 600; }
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
