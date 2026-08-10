@@ -1,0 +1,14 @@
+name = "govdata-irl-trigger"
+main = "index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+GITHUB_REPO = "geraco/GovDataIRL"
+WORKFLOW_FILE = "publish.yml"
+RATE_LIMIT_SECONDS = "900"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "229f8dd5dd4c4525b66ae6e82274436f"
+
+# Secret (never committed): wrangler secret put GITHUB_TOKEN

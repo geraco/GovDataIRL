@@ -44,6 +44,14 @@ a { color: var(--accent); }
 }
 .pipeline-status .links { margin-top: 0.6em; }
 .pipeline-status .links a { color: var(--muted); }
+.run-now-btn {
+  margin-top: 0.75em; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem;
+  background: var(--accent); color: #fff; border: none; border-radius: 3px;
+  padding: 0.5em 1em; cursor: pointer;
+}
+.run-now-btn:hover { background: color-mix(in srgb, var(--accent) 85%, black); }
+.run-now-btn:disabled { opacity: 0.5; cursor: default; }
+.run-now-status { margin-top: 0.5em; font-size: 0.7rem; max-width: 220px; white-space: normal; }
 
 /* ---- archive: facets ---- */
 .catalogue-section { max-width: 940px; margin: 0 auto; padding: 1.75rem 1.5rem 1.25rem; border-bottom: 1px solid var(--rule); }
@@ -139,6 +147,8 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
   <div class="pipeline-status">
     <div>Last run: 2026-08-10 10:12 UTC</div>
     <div class="links"><a href="feed.json">JSON</a> &middot; <a href="feed.xml">RSS</a></div>
+    <button id="run-now-btn" class="run-now-btn" type="button">Run now</button>
+    <div id="run-now-status" class="run-now-status"></div>
   </div>
 </div>
 
@@ -535,6 +545,26 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
       });
     });
   }
+
+  var runBtn = document.getElementById('run-now-btn');
+  var runStatus = document.getElementById('run-now-status');
+  var TRIGGER_URL = 'https://govdata-irl-trigger.gerry-coburn.workers.dev/trigger';
+
+  runBtn.addEventListener('click', function () {
+    runBtn.disabled = true;
+    runStatus.textContent = 'Triggering a run…';
+    fetch(TRIGGER_URL, { method: 'POST' })
+      .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
+      .then(function (result) {
+        runStatus.textContent = result.body.message || (result.ok ? 'Triggered.' : 'Something went wrong.');
+      })
+      .catch(function () {
+        runStatus.textContent = 'Could not reach the trigger service — try again later.';
+      })
+      .finally(function () {
+        runBtn.disabled = false;
+      });
+  });
 })();
 </script>
 </body>

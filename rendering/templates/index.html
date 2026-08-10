@@ -17,6 +17,8 @@
   <div class="pipeline-status">
     <div>Last run: {{ last_run_at or "never" }}</div>
     <div class="links"><a href="feed.json">JSON</a> &middot; <a href="feed.xml">RSS</a></div>
+    <button id="run-now-btn" class="run-now-btn" type="button">Run now</button>
+    <div id="run-now-status" class="run-now-status"></div>
   </div>
 </div>
 
@@ -98,6 +100,26 @@
       });
     });
   }
+
+  var runBtn = document.getElementById('run-now-btn');
+  var runStatus = document.getElementById('run-now-status');
+  var TRIGGER_URL = 'https://govdata-irl-trigger.gerry-coburn.workers.dev/trigger';
+
+  runBtn.addEventListener('click', function () {
+    runBtn.disabled = true;
+    runStatus.textContent = 'Triggering a run…';
+    fetch(TRIGGER_URL, { method: 'POST' })
+      .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
+      .then(function (result) {
+        runStatus.textContent = result.body.message || (result.ok ? 'Triggered.' : 'Something went wrong.');
+      })
+      .catch(function () {
+        runStatus.textContent = 'Could not reach the trigger service — try again later.';
+      })
+      .finally(function () {
+        runBtn.disabled = false;
+      });
+  });
 })();
 </script>
 </body>
