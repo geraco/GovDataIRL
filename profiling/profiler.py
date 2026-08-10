@@ -2,11 +2,34 @@
 ground truth the analyst pipeline is required to cite and Pass C verifies
 against. Returns a plain-JSON-serialisable dict.
 """
+import re
+
 import numpy as np
 import pandas as pd
 
 SAMPLE_ROWS = 20
 CORRELATION_THRESHOLD = 0.5
+
+NON_MEASURE_NAME_MARKERS = (
+    "year", "week", "date", "period", "month", "day",
+    "easting", "northing", "lat", "lon", "latitude", "longitude", "geo",
+)
+ID_LIKE_PATTERN = re.compile(r"(^|[_\s])id(s)?($|[_\s])", re.IGNORECASE)  # "id", "station id", "_id", "object ids"
+ADMIN_TIMESTAMP_MARKERS = ("last_updated", "modified", "created", "timestamp", "updated_at", "edited")
+
+
+def non_date_like_columns(columns: list[str]) -> list[str]:
+    """Filters out numeric columns whose *name* looks like a calendar field,
+    an identifier, or a geographic coordinate — these aren't measures, and
+    picking one as a chart's value axis produces a nonsense chart (real bug
+    hit repeatedly: YEAR resampled as a value, easting plotted as a trend,
+    "STATION ID" aggregated and reported as if it measured something). No
+    fallback to the unfiltered list on purpose — a dataset with no real
+    measure column should get no trend/ranking insight rather than a
+    fabricated one built from an ID or coordinate."""
+    return [c for c in columns
+            if not any(k in c.lower() for k in NON_MEASURE_NAME_MARKERS)
+            and not ID_LIKE_PATTERN.search(c)]
 
 
 def _coerce_temporal(series: pd.Series) -> pd.Series | None:
@@ -23,7 +46,7 @@ def profile_dataframe(df: pd.DataFrame) -> dict:
     df = df.copy()
     profile = {"row_count": len(df), "column_count": df.shape[1], "columns": {}}
 
-    numeric_cols, temporal_col = [], None
+    numeric_cols, temporal_candidates = [], []
 
     for col in df.columns:
         series = df[col]
@@ -43,9 +66,9 @@ def profile_dataframe(df: pd.DataFrame) -> dict:
             outliers = series[(series < q1 - 1.5 * iqr) | (series > q3 + 1.5 * iqr)]
             entry["outlier_count"] = int(outliers.shape[0])
         else:
-            temporal = _coerce_temporal(series) if temporal_col is None else None
+            temporal = _coerce_temporal(series)
             if temporal is not None:
-                temporal_col = col
+                temporal_candidates.append((col, temporal))
                 entry["detected_type"] = "temporal"
                 entry["date_range"] = [str(temporal.min().date()), str(temporal.max().date())]
             else:
@@ -54,6 +77,14 @@ def profile_dataframe(df: pd.DataFrame) -> dict:
                 entry["top_values"] = {str(k): int(v) for k, v in top.items()}
 
         profile["columns"][col] = entry
+
+    # Prefer a genuine observation date over an admin edit/metadata timestamp
+    # (e.g. "last_updated" on a location registry isn't a real time axis).
+    temporal_col = None
+    if temporal_candidates:
+        domain_dates = [c for c, _ in temporal_candidates
+                         if not any(m in c.lower() for m in ADMIN_TIMESTAMP_MARKERS)]
+        temporal_col = domain_dates[0] if domain_dates else temporal_candidates[0][0]
 
     if len(numeric_cols) >= 2:
         corr = df[numeric_cols].corr(numeric_only=True)
@@ -65,9 +96,7 @@ def profile_dataframe(df: pd.DataFrame) -> dict:
                     pairs.append({"a": a, "b": b, "correlation": round(float(r), 3)})
         profile["correlations"] = sorted(pairs, key=lambda p: -abs(p["correlation"]))
 
-    value_candidates = [c for c in numeric_cols if not any(
-        k in c.lower() for k in ("year", "week", "date", "period", "month", "day")
-    )] or numeric_cols
+    value_candidates = non_date_like_columns(numeric_cols)
     if temporal_col and value_candidates:
         profile["time_series"] = _resample(df, temporal_col, value_candidates[0])
 

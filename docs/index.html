@@ -91,8 +91,23 @@ a { color: var(--accent); }
 }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
-.report-chart { width: 100%; max-width: none; margin: 2rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2rem 0; }
-@media (max-width: 760px) { .report-chart { margin: 2rem 0; } }
+
+/* ---- Observable Plot chart embeds ---- */
+.chart-block {
+  width: 100%; margin: 2.25rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2.25rem 0;
+  max-width: none; padding: 0;
+}
+@media (max-width: 760px) { .chart-block { margin: 2.25rem 0; } }
+.chart-title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  margin: 0 0 0.75rem; color: var(--fg);
+}
+.obs-plot-container { min-height: 60px; }
+.obs-plot-container svg { max-width: 100%; height: auto; }
+details.chart-data { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+details.chart-data summary { cursor: pointer; }
+details.chart-data table { border-collapse: collapse; margin-top: 0.5rem; font-size: 0.85rem; }
+details.chart-data th, details.chart-data td { text-align: left; padding: 0.25em 0.9em 0.25em 0; border-bottom: 1px solid var(--rule); }
 .caveat {
   border-left: 3px solid var(--accent); padding: 0.6em 1em;
   background: color-mix(in srgb, var(--accent) 6%, transparent); margin: 2rem 0; font-size: 0.95rem;
@@ -111,7 +126,7 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
     <p class="tagline">Every report is generated from a live dataset, statistically profiled, and fact-checked against real numbers before publishing.</p>
   </div>
   <div class="pipeline-status">
-    <div>Last run: never</div>
+    <div>Last run: 2026-08-10 09:49 UTC</div>
     <div class="links"><a href="feed.json">JSON</a> &middot; <a href="feed.xml">RSS</a></div>
   </div>
 </div>
@@ -119,6 +134,21 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
 <div class="catalogue-section">
   <div class="kicker">Browse the catalogue &middot; by source agency</div>
   <div class="facet-row" id="agency-facets">
+    
+    <div class="facet-btn" data-agency="Dublinked.ie">
+      <div class="name mono">Dublinked.ie</div>
+      <div class="count">1 report</div>
+    </div>
+    
+    <div class="facet-btn" data-agency="Dublin City Council">
+      <div class="name mono">Dublin City Council</div>
+      <div class="count">3 reports</div>
+    </div>
+    
+    <div class="facet-btn" data-agency="Department of Agriculture, Food and the Marine">
+      <div class="name mono">Department of Agriculture, Food and the Marine</div>
+      <div class="count">1 report</div>
+    </div>
     
   </div>
 
@@ -130,7 +160,120 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
 
 <div class="archive-list" id="archive-list">
   
-  <p class="meta">No reports published yet.</p>
+  <div class="archive-item" data-agency="Dublinked.ie" data-score="60" data-published="2026-08-10T09:49:18.353385+00:00">
+    <a class="title" href="reports/2026-08-10-bathing-water-api.html">Nine in ten Irish bathing water samples rated 'Excellent' in late May 2014, with Waterford accounting for over a third of all tests</a>
+    <div class="row">
+      <span class="pub-badge">Dublinked.ie</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 60/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;481d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T09:48:53.186631+00:00">
+    <a class="title" href="reports/2026-08-10-dublinbikes-api-dcc.html">Dublinbikes scheme lost nearly a quarter of its bike stands in early 2018, with average capacity dropping from 31.95 to 24.54 stands per station</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;32d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T09:48:27.932265+00:00">
+    <a class="title" href="reports/2026-08-10-pedestrian-and-cycle-counter-api-for-dublin-region.html">Pedestrian counters outnumber cycling-only counters by more than two to one across Dublin's monitoring network</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;416d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Department of Agriculture, Food and the Marine" data-score="80" data-published="2026-08-10T09:48:03.556267+00:00">
+    <a class="title" href="reports/2026-08-10-national-beef-kill-figures-2023.html">Beef slaughter jumped 19% in 2020 and remained elevated through 2023, driven by steers and grade C carcasses</a>
+    <div class="row">
+      <span class="pub-badge">Department of Agriculture, Food and the Marine</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;886d</span>
+    </div>
+  </div>
+  
+  <div class="archive-item" data-agency="Dublin City Council" data-score="80" data-published="2026-08-10T09:47:32.348820+00:00">
+    <a class="title" href="reports/2026-08-10-moby-bikes-api.html">Dublin's Moby bike-share fleet operates almost entirely as general-service bikes, with 94% in standard circulation and only 6% in workshop or private use</a>
+    <div class="row">
+      <span class="pub-badge">Dublin City Council</span>
+      <span>2026-08-10</span>
+      <span class="conf-dots" title="Interestingness score: 80/100">
+        CONF
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot on"></span>
+        
+        <span class="dot "></span>
+        
+      </span>
+      <span class="freshness stale">dataset &Delta;235d</span>
+    </div>
+  </div>
   
 </div>
 

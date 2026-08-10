@@ -11,6 +11,7 @@ from analyst import run_pipeline
 from connectors import NotNarrable, fetch as connector_fetch
 from db.store import connect, init_db, upsert
 from discovery.discover import pick_dataset, refresh_candidate_pool
+from profiling.insights import detect_insights
 from profiling.profiler import profile_dataframe
 from publish.build_site import build_report
 from publish.notify import notify_published
@@ -41,12 +42,13 @@ def _try_publish(candidate: dict) -> bool:
     try:
         df, source_notes = connector_fetch(resource, package)
         profile = profile_dataframe(df)
+        insights = detect_insights(df, profile)
         metadata = {
             "title": candidate["title"], "publisher": candidate["publisher"],
             "licence": candidate["licence"], "description": candidate["package_notes"],
         }
-        pipeline_result = run_pipeline(metadata, profile)
-        chart_tags = render_all(df, pipeline_result["chart_specs"])
+        pipeline_result = run_pipeline(metadata, profile, insights, df)
+        chart_tags = render_all(pipeline_result["chart_specs"])
         dataset_page_url = f"https://data.gov.ie/dataset/{candidate['package_name']}"
 
         report = build_report(

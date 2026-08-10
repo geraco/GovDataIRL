@@ -1,13 +1,20 @@
-"""Three-pass pipeline orchestration — spec §5.4."""
+"""Two-pass AI pipeline (draft + verify) plus a deterministic chart
+selector. Spec §5.4 originally called for a third AI pass to propose chart
+specs; that's now rendering/selector.py — a pure-code selector bound
+directly to real dataframe columns, which makes a hallucinated field name
+structurally impossible instead of merely unlikely. The AI's job is
+editorial judgement (what's the story), not field-binding (which is exactly
+the kind of thing code should own)."""
+from rendering.selector import select_charts
+
 from .pass_a_draft import draft_narrative
-from .pass_b_charts import propose_charts
 from .pass_c_verify import apply_verification, verify_narrative
 
 
-def run_pipeline(metadata: dict, profile: dict) -> dict:
-    draft = draft_narrative(metadata, profile)
-    chart_specs = propose_charts(profile)["charts"]
-    verification = verify_narrative(draft, profile)
+def run_pipeline(metadata: dict, profile: dict, insights: list[dict], df) -> dict:
+    draft = draft_narrative(metadata, profile, insights)
+    chart_specs = select_charts(insights, df)
+    verification = verify_narrative(draft, profile, insights)
     verified_narrative = apply_verification(draft, verification)
 
     if not verified_narrative["observations"]:
@@ -18,4 +25,5 @@ def run_pipeline(metadata: dict, profile: dict) -> dict:
         "chart_specs": chart_specs,
         "raw_draft": draft,
         "verification": verification,
+        "insights": insights,
     }

@@ -1,5 +1,41 @@
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Ireland Open Data Analyst",
-  "items": []
+  "items": [
+    {
+      "id": "70a5e8fc68864b2fbea640ed07fd24d3",
+      "title": "Nine in ten Irish bathing water samples rated 'Excellent' in late May 2014, with Waterford accounting for over a third of all tests",
+      "summary": "Nine in ten Irish bathing water samples rated 'Excellent' in late May 2014, with Waterford accounting for over a third of all tests",
+      "url": "reports/2026-08-10-bathing-water-api.html",
+      "date_published": "2026-08-10T09:49:18.353385+00:00"
+    },
+    {
+      "id": "5f9bb9dc40e2422594bd819a108ee452",
+      "title": "Dublinbikes scheme lost nearly a quarter of its bike stands in early 2018, with average capacity dropping from 31.95 to 24.54 stands per station",
+      "summary": "Dublinbikes scheme lost nearly a quarter of its bike stands in early 2018, with average capacity dropping from 31.95 to 24.54 stands per station",
+      "url": "reports/2026-08-10-dublinbikes-api-dcc.html",
+      "date_published": "2026-08-10T09:48:53.186631+00:00"
+    },
+    {
+      "id": "05baae247655418c815063ecd5c275c8",
+      "title": "Pedestrian counters outnumber cycling-only counters by more than two to one across Dublin's monitoring network",
+      "summary": "Pedestrian counters outnumber cycling-only counters by more than two to one across Dublin's monitoring network",
+      "url": "reports/2026-08-10-pedestrian-and-cycle-counter-api-for-dublin-region.html",
+      "date_published": "2026-08-10T09:48:27.932265+00:00"
+    },
+    {
+      "id": "fc9beab7aa234806b7951dc3e0745540",
+      "title": "Beef slaughter jumped 19% in 2020 and remained elevated through 2023, driven by steers and grade C carcasses",
+      "summary": "Beef slaughter jumped 19% in 2020 and remained elevated through 2023, driven by steers and grade C carcasses",
+      "url": "reports/2026-08-10-national-beef-kill-figures-2023.html",
+      "date_published": "2026-08-10T09:48:03.556267+00:00"
+    },
+    {
+      "id": "06363fdf9aec465eaef71718c8144b96",
+      "title": "Dublin's Moby bike-share fleet operates almost entirely as general-service bikes, with 94% in standard circulation and only 6% in workshop or private use",
+      "summary": "Dublin's Moby bike-share fleet operates almost entirely as general-service bikes, with 94% in standard circulation and only 6% in workshop or private use",
+      "url": "reports/2026-08-10-moby-bikes-api.html",
+      "date_published": "2026-08-10T09:47:32.348820+00:00"
+    }
+  ]
 }

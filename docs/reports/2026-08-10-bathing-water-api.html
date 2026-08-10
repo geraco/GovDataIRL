@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> — Ireland Open Data Analyst</title>
+<style>:root {
+  --bg: #FAFAF7;
+  --fg: #1A1A18;
+  --muted: #6B6B63;
+  --accent: #8B3A2E;
+  --rule: #E4E2DA;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: "Inter", -apple-system, sans-serif;
+  line-height: 1.6; margin: 0;
+}
+.wrap { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+h1, h2, .headline {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 700; line-height: 1.2;
+}
+a { color: var(--accent); }
+.kicker {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+}
+.kicker.accent { color: var(--accent); }
+.mono { font-family: "IBM Plex Mono", monospace; }
+
+/* ---- site header (shared by index + report) ---- */
+.site-header {
+  max-width: 940px; margin: 0 auto; padding: 2.5rem 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;
+}
+.site-header h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+.site-header .tagline { color: var(--muted); font-size: 0.95rem; max-width: 520px; margin: 0; }
+.pipeline-status {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--muted);
+  text-align: right; white-space: nowrap;
+}
+.pipeline-status .links { margin-top: 0.6em; }
+.pipeline-status .links a { color: var(--muted); }
+
+/* ---- archive: facets ---- */
+.catalogue-section { max-width: 940px; margin: 0 auto; padding: 1.75rem 1.5rem 1.25rem; border-bottom: 1px solid var(--rule); }
+.facet-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.facet-btn {
+  flex: 1 1 120px; min-width: 120px; padding: 0.9em 1em;
+  border: 1px solid var(--rule); background: #fff; color: var(--fg);
+}
+.facet-btn .name { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; font-weight: 500; }
+.facet-btn .count { font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; opacity: 0.7; margin-top: 0.3em; }
+.sort-row { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.25rem; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; }
+.sort-row span { cursor: pointer; color: var(--muted); }
+.sort-row span.active { color: var(--fg); text-decoration: underline; }
+
+/* ---- archive: list ---- */
+.archive-list { max-width: 940px; margin: 0 auto; padding: 0.25rem 1.5rem 3rem; }
+.archive-item { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+.archive-item a.title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  line-height: 1.3; color: var(--fg); text-decoration: none;
+}
+.archive-item a.title:hover { color: var(--accent); }
+.archive-item .row {
+  display: flex; gap: 0.9em; align-items: center; margin-top: 0.45em; flex-wrap: wrap;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--muted);
+}
+.pub-badge { border: 1px solid var(--rule); border-radius: 999px; padding: 0.15em 0.65em; }
+.conf-dots { display: flex; gap: 2px; align-items: center; }
+.conf-dots .dot { width: 6px; height: 6px; border-radius: 1px; display: inline-block; background: var(--rule); }
+.conf-dots .dot.on { background: var(--accent); }
+.freshness { font-weight: 500; }
+.freshness.fresh { color: #3A7A5E; }
+.freshness.aging { color: #B08A2E; }
+.freshness.stale { color: var(--accent); }
+
+/* ---- report page ---- */
+.report-wrap { max-width: 680px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+.report-wrap h1 { font-size: 2rem; margin: 0.2em 0 0.4em; }
+.report-wrap .headline { font-size: 1.4rem; color: var(--accent); margin: 1.2em 0 0.6em; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+.meta a { color: var(--muted); }
+.badge {
+  display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
+}
+.observations { padding-left: 1.2em; }
+.observations li { margin: 0.6em 0; }
+
+/* ---- Observable Plot chart embeds ---- */
+.chart-block {
+  width: 100%; margin: 2.25rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2.25rem 0;
+  max-width: none; padding: 0;
+}
+@media (max-width: 760px) { .chart-block { margin: 2.25rem 0; } }
+.chart-title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  margin: 0 0 0.75rem; color: var(--fg);
+}
+.obs-plot-container { min-height: 60px; }
+.obs-plot-container svg { max-width: 100%; height: auto; }
+details.chart-data { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+details.chart-data summary { cursor: pointer; }
+details.chart-data table { border-collapse: collapse; margin-top: 0.5rem; font-size: 0.85rem; }
+details.chart-data th, details.chart-data td { text-align: left; padding: 0.25em 0.9em 0.25em 0; border-bottom: 1px solid var(--rule); }
+.caveat {
+  border-left: 3px solid var(--accent); padding: 0.6em 1em;
+  background: color-mix(in srgb, var(--accent) 6%, transparent); margin: 2rem 0; font-size: 0.95rem;
+}
+details.source-method { margin-top: 2rem; font-size: 0.9rem; color: var(--muted); }
+details.source-method summary { cursor: pointer; color: var(--fg); font-weight: 600; }
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+.tabular-nums { font-variant-numeric: tabular-nums; }</style>
+</head>
+<body>
+<div class="report-wrap">
+  <p class="meta"><a href="../index.html">&larr; Ireland Open Data Analyst</a></p>
+  <h1>Bathing Water API</h1>
+  <p class="meta">
+    <span class="badge">Dublinked.ie</span>
+    <span class="badge">cc-by</span>
+    &middot; last updated 2025-04-16T09:10:59.386994
+  </p>
+
+  <p class="headline">Nine in ten Irish bathing water samples rated 'Excellent' in late May 2014, with Waterford accounting for over a third of all tests</p>
+
+  <ul class="observations">
+    
+    <li>90% of the 50 water quality samples achieved 'Excellent' status, with only 3 samples rated 'Poor' and 2 rated 'Good'</li>
+    
+    <li>Waterford beaches were sampled far more intensively than other counties, representing 36% of all tests (18 of 50), followed by Galway at 30% (15 of 50) and Dublin at 18% (9 of 50)</li>
+    
+    <li>E. coli levels were very low in the majority of samples, with 30% (15 of 50) recording concentrations below the detection threshold of 10 colony-forming units per 100ml</li>
+    
+    <li>All samples were taken within a narrow five-day window between 22 and 26 May 2014, capturing a snapshot of early-season water quality rather than seasonal trends</li>
+    
+  </ul>
+
+  
+  
+<figure class="chart-block">
+  <figcaption class="chart-title">'Excellent' accounts for 90% of all sample_water_quality_status values (45 of 50).</figcaption>
+  <div id="chart-0" class="obs-plot-container" role="img" aria-label="'Excellent' accounts for 90% of all sample_water_quality_status values (45 of 50)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Excellent</td><td class='tabular-nums'>45</td></tr><tr><td>Poor</td><td class='tabular-nums'>3</td></tr><tr><td>Good</td><td class='tabular-nums'>2</td></tr></tbody></table></details>
+</figure>
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const data = [{"label": "Excellent", "value": 45}, {"label": "Poor", "value": 3}, {"label": "Good", "value": 2}];
+const container = document.getElementById("chart-0");
+const width = Math.min(820, container.clientWidth || 680);
+const plot = Plot.plot({
+  width, height: Math.max(120, data.length * 34), marginLeft: 200,
+  x: {label: "value", grid: true}, y: {label: null},
+  marks: [
+    Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
+    Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
+  ],
+});
+container.append(plot);
+
+</script>
+
+  
+  
+<figure class="chart-block">
+  <figcaption class="chart-title">'Waterford' accounts for 36% of all county_name values (18 of 50).</figcaption>
+  <div id="chart-1" class="obs-plot-container" role="img" aria-label="'Waterford' accounts for 36% of all county_name values (18 of 50)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Waterford</td><td class='tabular-nums'>18</td></tr><tr><td>Galway</td><td class='tabular-nums'>15</td></tr><tr><td>Dublin</td><td class='tabular-nums'>9</td></tr><tr><td>Cork</td><td class='tabular-nums'>7</td></tr><tr><td>Wicklow</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
+</figure>
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const data = [{"label": "Waterford", "value": 18}, {"label": "Galway", "value": 15}, {"label": "Dublin", "value": 9}, {"label": "Cork", "value": 7}, {"label": "Wicklow", "value": 1}];
+const container = document.getElementById("chart-1");
+const width = Math.min(820, container.clientWidth || 680);
+const plot = Plot.plot({
+  width, height: Math.max(120, data.length * 34), marginLeft: 200,
+  x: {label: "value", grid: true}, y: {label: null},
+  marks: [
+    Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
+    Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
+  ],
+});
+container.append(plot);
+
+</script>
+
+  
+  
+<figure class="chart-block">
+  <figcaption class="chart-title">'Waterford City &amp; County Council' accounts for 36% of all local_authority_name values (18 of 50).</figcaption>
+  <div id="chart-2" class="obs-plot-container" role="img" aria-label="'Waterford City &amp; County Council' accounts for 36% of all local_authority_name values (18 of 50)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Waterford City &amp; County Council</td><td class='tabular-nums'>18</td></tr><tr><td>Galway County Council</td><td class='tabular-nums'>15</td></tr><tr><td>Fingal County Council</td><td class='tabular-nums'>9</td></tr><tr><td>Cork County Council</td><td class='tabular-nums'>7</td></tr><tr><td>Wicklow County Council</td><td class='tabular-nums'>1</td></tr></tbody></table></details>
+</figure>
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const data = [{"label": "Waterford City & County Council", "value": 18}, {"label": "Galway County Council", "value": 15}, {"label": "Fingal County Council", "value": 9}, {"label": "Cork County Council", "value": 7}, {"label": "Wicklow County Council", "value": 1}];
+const container = document.getElementById("chart-2");
+const width = Math.min(820, container.clientWidth || 680);
+const plot = Plot.plot({
+  width, height: Math.max(120, data.length * 34), marginLeft: 200,
+  x: {label: "value", grid: true}, y: {label: null},
+  marks: [
+    Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
+    Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
+  ],
+});
+container.append(plot);
+
+</script>
+
+  
+
+  <div class="caveat"><strong>A caveat worth knowing:</strong> This dataset contains only 50 samples collected over five days in late May 2014, making it too limited to assess seasonal variation, long-term trends, or the full range of Ireland's bathing waters</div>
+
+  <details class="source-method">
+    <summary>Source &amp; method</summary>
+    <p>Dataset on data.gov.ie: <a href="https://data.gov.ie/dataset/beaches-api">https://data.gov.ie/dataset/beaches-api</a></p>
+    <p>API endpoint used: <code>https://data.epa.ie/bw/api/v1/measurements</code></p>
+    <p>Licence: cc-by</p>
+    <p>Selected automatically — interestingness score 60/100
+       (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
+       see the project's scoring method for details).</p>
+    <p>Published 2026-08-10T09:49:18.353385+00:00.</p>
+  </details>
+
+  <hr>
+  <p class="meta">Generated automatically by Ireland Open Data Analyst — every quantitative claim above
+     was checked against a computed value before publishing.</p>
+</div>
+</body>
+</html>

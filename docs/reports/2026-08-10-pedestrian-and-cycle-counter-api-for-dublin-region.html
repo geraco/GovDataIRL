@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> — Ireland Open Data Analyst</title>
+<style>:root {
+  --bg: #FAFAF7;
+  --fg: #1A1A18;
+  --muted: #6B6B63;
+  --accent: #8B3A2E;
+  --rule: #E4E2DA;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: "Inter", -apple-system, sans-serif;
+  line-height: 1.6; margin: 0;
+}
+.wrap { max-width: 940px; margin: 0 auto; padding: 0 1.5rem; }
+h1, h2, .headline {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 700; line-height: 1.2;
+}
+a { color: var(--accent); }
+.kicker {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+}
+.kicker.accent { color: var(--accent); }
+.mono { font-family: "IBM Plex Mono", monospace; }
+
+/* ---- site header (shared by index + report) ---- */
+.site-header {
+  max-width: 940px; margin: 0 auto; padding: 2.5rem 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;
+}
+.site-header h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+.site-header .tagline { color: var(--muted); font-size: 0.95rem; max-width: 520px; margin: 0; }
+.pipeline-status {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--muted);
+  text-align: right; white-space: nowrap;
+}
+.pipeline-status .links { margin-top: 0.6em; }
+.pipeline-status .links a { color: var(--muted); }
+
+/* ---- archive: facets ---- */
+.catalogue-section { max-width: 940px; margin: 0 auto; padding: 1.75rem 1.5rem 1.25rem; border-bottom: 1px solid var(--rule); }
+.facet-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.facet-btn {
+  flex: 1 1 120px; min-width: 120px; padding: 0.9em 1em;
+  border: 1px solid var(--rule); background: #fff; color: var(--fg);
+}
+.facet-btn .name { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; font-weight: 500; }
+.facet-btn .count { font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; opacity: 0.7; margin-top: 0.3em; }
+.sort-row { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.25rem; font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; }
+.sort-row span { cursor: pointer; color: var(--muted); }
+.sort-row span.active { color: var(--fg); text-decoration: underline; }
+
+/* ---- archive: list ---- */
+.archive-list { max-width: 940px; margin: 0 auto; padding: 0.25rem 1.5rem 3rem; }
+.archive-item { padding: 0.9rem 0; border-bottom: 1px solid var(--rule); }
+.archive-item a.title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  line-height: 1.3; color: var(--fg); text-decoration: none;
+}
+.archive-item a.title:hover { color: var(--accent); }
+.archive-item .row {
+  display: flex; gap: 0.9em; align-items: center; margin-top: 0.45em; flex-wrap: wrap;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--muted);
+}
+.pub-badge { border: 1px solid var(--rule); border-radius: 999px; padding: 0.15em 0.65em; }
+.conf-dots { display: flex; gap: 2px; align-items: center; }
+.conf-dots .dot { width: 6px; height: 6px; border-radius: 1px; display: inline-block; background: var(--rule); }
+.conf-dots .dot.on { background: var(--accent); }
+.freshness { font-weight: 500; }
+.freshness.fresh { color: #3A7A5E; }
+.freshness.aging { color: #B08A2E; }
+.freshness.stale { color: var(--accent); }
+
+/* ---- report page ---- */
+.report-wrap { max-width: 680px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+.report-wrap h1 { font-size: 2rem; margin: 0.2em 0 0.4em; }
+.report-wrap .headline { font-size: 1.4rem; color: var(--accent); margin: 1.2em 0 0.6em; }
+.meta { color: var(--muted); font-size: 0.9rem; }
+.meta a { color: var(--muted); }
+.badge {
+  display: inline-block; border: 1px solid var(--rule); border-radius: 999px;
+  padding: 0.15em 0.7em; font-size: 0.8rem; color: var(--muted);
+}
+.observations { padding-left: 1.2em; }
+.observations li { margin: 0.6em 0; }
+
+/* ---- Observable Plot chart embeds ---- */
+.chart-block {
+  width: 100%; margin: 2.25rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2.25rem 0;
+  max-width: none; padding: 0;
+}
+@media (max-width: 760px) { .chart-block { margin: 2.25rem 0; } }
+.chart-title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  margin: 0 0 0.75rem; color: var(--fg);
+}
+.obs-plot-container { min-height: 60px; }
+.obs-plot-container svg { max-width: 100%; height: auto; }
+details.chart-data { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+details.chart-data summary { cursor: pointer; }
+details.chart-data table { border-collapse: collapse; margin-top: 0.5rem; font-size: 0.85rem; }
+details.chart-data th, details.chart-data td { text-align: left; padding: 0.25em 0.9em 0.25em 0; border-bottom: 1px solid var(--rule); }
+.caveat {
+  border-left: 3px solid var(--accent); padding: 0.6em 1em;
+  background: color-mix(in srgb, var(--accent) 6%, transparent); margin: 2rem 0; font-size: 0.95rem;
+}
+details.source-method { margin-top: 2rem; font-size: 0.9rem; color: var(--muted); }
+details.source-method summary { cursor: pointer; color: var(--fg); font-weight: 600; }
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+.tabular-nums { font-variant-numeric: tabular-nums; }</style>
+</head>
+<body>
+<div class="report-wrap">
+  <p class="meta"><a href="../index.html">&larr; Ireland Open Data Analyst</a></p>
+  <h1>Pedestrian and Cycle counter API for Dublin Region</h1>
+  <p class="meta">
+    <span class="badge">Dublin City Council</span>
+    <span class="badge">cc-by</span>
+    &middot; last updated 2025-06-19T18:31:50.405425
+  </p>
+
+  <p class="headline">Pedestrian counters outnumber cycling-only counters by more than two to one across Dublin's monitoring network</p>
+
+  <ul class="observations">
+    
+    <li>Pedestrian-only sensors account for 47 of 131 counter records (36%), making them the dominant monitoring type in the network</li>
+    
+    <li>Just 20 counters (15%) monitor cyclists only, while 19 counters track both pedestrians and cyclists together</li>
+    
+    <li>Over one-third of counter records (34.35%) have missing location and setup information, indicating incomplete metadata in the API</li>
+    
+    <li>The most common installation date was 27 February 2019, when 11 counters were set up, followed by 27 August 2020 with 9 installations</li>
+    
+    <li>Geographic spread shows variation in placement: 28 of 131 longitude values (21.4%) are statistical outliers, suggesting some counters are positioned well outside the typical Dublin city centre cluster</li>
+    
+  </ul>
+
+  
+  
+<figure class="chart-block">
+  <figcaption class="chart-title">'Pedestrians' accounts for 36% of all User Type values (47 of 131).</figcaption>
+  <div id="chart-0" class="obs-plot-container" role="img" aria-label="'Pedestrians' accounts for 36% of all User Type values (47 of 131)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody><tr><td>Pedestrians</td><td class='tabular-nums'>47</td></tr><tr><td>Cyclists</td><td class='tabular-nums'>20</td></tr><tr><td>Pedestrians/Cyclists</td><td class='tabular-nums'>19</td></tr></tbody></table></details>
+</figure>
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const data = [{"label": "Pedestrians", "value": 47}, {"label": "Cyclists", "value": 20}, {"label": "Pedestrians/Cyclists", "value": 19}];
+const container = document.getElementById("chart-0");
+const width = Math.min(820, container.clientWidth || 680);
+const plot = Plot.plot({
+  width, height: Math.max(120, data.length * 34), marginLeft: 200,
+  x: {label: "value", grid: true}, y: {label: null},
+  marks: [
+    Plot.ruleY(data, {y: "label", x1: 0, x2: "value", stroke: "#E4E2DA", strokeWidth: 2}),
+    Plot.dot(data, {y: "label", x: "value", r: 5, fill: "#8B3A2E"}),
+    Plot.text(data, {y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}),
+    Plot.tip(data, Plot.pointer({y: "label", x: "value", title: d => `${d.label}: ${d.value}`})),
+  ],
+});
+container.append(plot);
+
+</script>
+
+  
+  
+<figure class="chart-block">
+  <figcaption class="chart-title">28 of 131 Longitude values (21.4%) are statistical outliers (outside 1.5× IQR).</figcaption>
+  <div id="chart-1" class="obs-plot-container" role="img" aria-label="28 of 131 Longitude values (21.4%) are statistical outliers (outside 1.5× IQR)."></div>
+  <details class="chart-data"><summary>View underlying data</summary><table><thead><tr><th>Statistic</th><th>Value</th></tr></thead><tbody><tr><td>min</td><td class='tabular-nums'>-6.422</td></tr><tr><td>median</td><td class='tabular-nums'>-6.259</td></tr><tr><td>max</td><td class='tabular-nums'>53.344</td></tr><tr><td>count</td><td class='tabular-nums'>86</td></tr></tbody></table></details>
+</figure>
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const data = [-6.25988, -6.2601, -6.24562, -6.24451, -6.2688, -6.349436, -6.24548, -6.237057412, -6.17032, -6.19107, -6.124308, -6.25922, -6.25924, 53.34441, -6.25888, -6.4123, -6.42233, -6.41477, -6.4103, -6.40953, -6.41056, -6.25887, -6.26152, -6.258337, -6.258023149, -6.25805, -6.34392, -6.34773, -6.35646, -6.25743, -6.25846, -6.12886, -6.16074, -6.14258, -6.12319, -6.26058, -6.25932, -6.25996, -6.25469, -6.23794, -6.23898, -6.277641331, -6.25362, -6.25467, -6.2701778, -6.24098, -6.2701778, -6.26286, -6.26333, -6.2632704, -6.26685, -6.243014, -6.21278, -6.213873918, -6.24418, -6.24418, -6.24127, -6.24112, -6.24099, -6.2414, -6.26178, -6.25969, -6.26004, -6.25911, -6.27208, -6.27247, -6.136892622, -6.26448, -6.26425, -6.2644, -6.2644, -6.19551, -6.19563, -6.19503, -6.395453225, -6.395446866, -6.2554, -6.253992, -6.258959911, -6.25933, -6.25918, -6.25927465, -6.13298, -6.13245, -6.13295, -6.13245599];
+const container = document.getElementById("chart-1");
+const width = Math.min(820, container.clientWidth || 680);
+const plot = Plot.plot({
+  width, height: 320, marginLeft: 56,
+  x: {label: "Longitude"}, y: {label: "count", grid: true},
+  marks: [
+    Plot.rectY(data, Plot.binX({y: "count"}, {x: d => d, fill: "#8B3A2E", fillOpacity: 0.85})),
+    Plot.ruleY([0]),
+  ],
+});
+container.append(plot);
+
+</script>
+
+  
+
+  <div class="caveat"><strong>A caveat worth knowing:</strong> Over one-third of records contain missing data across all fields, and the publisher notes existing data quality issues with specific sensors including Baggot Street Upper/Mespil Road/Bank</div>
+
+  <details class="source-method">
+    <summary>Source &amp; method</summary>
+    <p>Dataset on data.gov.ie: <a href="https://data.gov.ie/dataset/pedestrian-and-cycle-counter-api-for-dublin-region">https://data.gov.ie/dataset/pedestrian-and-cycle-counter-api-for-dublin-region</a></p>
+    <p>API endpoint used: <code>https://data.smartdublin.ie/dataset/666ac025-f0ba-47b3-ad12-63faf1b1d4d2/resource/f80d1ec3-e915-4ef0-988f-e3304b97dd37/download/ecocounter-locations.csv</code></p>
+    <p>Licence: cc-by</p>
+    <p>Selected automatically — interestingness score 80/100
+       (has a time dimension, multiple numeric fields, and/or a categorical breakdown;
+       see the project's scoring method for details).</p>
+    <p>Published 2026-08-10T09:48:27.932265+00:00.</p>
+  </details>
+
+  <hr>
+  <p class="meta">Generated automatically by Ireland Open Data Analyst — every quantitative claim above
+     was checked against a computed value before publishing.</p>
+</div>
+</body>
+</html>

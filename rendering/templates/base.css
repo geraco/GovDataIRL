@@ -85,8 +85,23 @@ a { color: var(--accent); }
 }
 .observations { padding-left: 1.2em; }
 .observations li { margin: 0.6em 0; }
-.report-chart { width: 100%; max-width: none; margin: 2rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2rem 0; }
-@media (max-width: 760px) { .report-chart { margin: 2rem 0; } }
+
+/* ---- Observable Plot chart embeds ---- */
+.chart-block {
+  width: 100%; margin: 2.25rem calc(-1 * (100vw - 680px) / 2 + 1.25rem) 2.25rem 0;
+  max-width: none; padding: 0;
+}
+@media (max-width: 760px) { .chart-block { margin: 2.25rem 0; } }
+.chart-title {
+  font-family: "Source Serif 4", Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  margin: 0 0 0.75rem; color: var(--fg);
+}
+.obs-plot-container { min-height: 60px; }
+.obs-plot-container svg { max-width: 100%; height: auto; }
+details.chart-data { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+details.chart-data summary { cursor: pointer; }
+details.chart-data table { border-collapse: collapse; margin-top: 0.5rem; font-size: 0.85rem; }
+details.chart-data th, details.chart-data td { text-align: left; padding: 0.25em 0.9em 0.25em 0; border-bottom: 1px solid var(--rule); }
 .caveat {
   border-left: 3px solid var(--accent); padding: 0.6em 1em;
   background: color-mix(in srgb, var(--accent) 6%, transparent); margin: 2rem 0; font-size: 0.95rem;
