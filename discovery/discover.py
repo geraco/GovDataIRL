@@ -24,13 +24,22 @@ def refresh_candidate_pool():
 
 
 def pick_dataset() -> dict | None:
-    """Weighted-random pick from the scored pool, excluding recent picks."""
+    """Weighted-random pick from the scored pool, excluding recently-published
+    *datasets* (package_id) — not just resource_id. A single CKAN package
+    routinely has several resource_ids (e.g. "Bathing Water API" has separate
+    locations/measurements/alerts endpoints); excluding only by resource_id
+    let the same named dataset get re-published repeatedly via a different
+    underlying resource, which reads as a duplicate story to a reader even
+    though no individual resource_id was technically repeated."""
     cutoff = (datetime.now(timezone.utc) - timedelta(days=RECENCY_EXCLUSION_DAYS)).isoformat()
     with connect() as conn:
-        recent = {
-            r["resource_id"]
+        recent_packages = {
+            r["package_id"]
             for r in conn.execute(
-                "SELECT resource_id FROM runs WHERE status='success' AND started_at >= ?", (cutoff,)
+                """SELECT DISTINCT c.package_id FROM runs r
+                   JOIN candidates c ON c.resource_id = r.resource_id
+                   WHERE r.status = 'success' AND r.started_at >= ?""",
+                (cutoff,),
             )
         }
         pool = [
@@ -39,7 +48,7 @@ def pick_dataset() -> dict | None:
                 "SELECT * FROM candidates WHERE interestingness_score >= ? AND reachable = 1",
                 (INTERESTINGNESS_THRESHOLD,),
             )
-            if r["resource_id"] not in recent
+            if r["package_id"] not in recent_packages
         ]
 
     if not pool:
