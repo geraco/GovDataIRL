@@ -99,7 +99,7 @@ const plot = Plot.plot({{
   marks: [
     Plot.ruleY(data, {{y: "label", x1: 0, x2: "value", stroke: "{RULE}", strokeWidth: 2}}),
     Plot.dot(data, {{y: "label", x: "value", r: 5, fill: "{ACCENT_COLOUR}"}}),
-    Plot.text(data, {{y: "label", x: "value", text: d => d.value, dx: 18, fill: "#1A1A18"}}),
+    Plot.text(data, {{y: "label", x: "value", text: d => d.value.toLocaleString(), dx: 22, textAnchor: "start", fill: "#1A1A18"}}),
     Plot.tip(data, Plot.pointer({{y: "label", x: "value", title: d => `${{d.label}}: ${{d.value}}`}})),
   ],
 }});
