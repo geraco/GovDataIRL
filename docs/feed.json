@@ -3,6 +3,13 @@
   "title": "Ireland Open Data Analyst",
   "items": [
     {
+      "id": "92dd358e97b64f48b684747fc44ea9de",
+      "title": "Nearly all Moby bikes in Dublin were classified as general-use, but one in six location readings fell outside normal geographic bounds",
+      "summary": "Nearly all Moby bikes in Dublin were classified as general-use, but one in six location readings fell outside normal geographic bounds",
+      "url": "reports/2026-10-18-moby-bikes-api.html",
+      "date_published": "2026-10-18T14:18:42.990614+00:00"
+    },
+    {
       "id": "8a30a9575d9145bfa6c2286a2659ceb6",
       "title": "Weekly beef kill numbers rose 18% over five years, driven by a sharp 19% jump in late 2020 before peaking in 2022",
       "summary": "Weekly beef kill numbers rose 18% over five years, driven by a sharp 19% jump in late 2020 before peaking in 2022",
