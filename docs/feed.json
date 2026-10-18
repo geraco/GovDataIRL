@@ -3,6 +3,13 @@
   "title": "Ireland Open Data Analyst",
   "items": [
     {
+      "id": "1ee77a5e86dd44cbaee473dbc8f601bb",
+      "title": "Pedestrian counters outnumber cycling-only sensors by more than two to one across Dublin's monitoring network",
+      "summary": "Pedestrian counters outnumber cycling-only sensors by more than two to one across Dublin's monitoring network",
+      "url": "reports/2026-10-18-pedestrian-and-cycle-counter-api-for-dublin-region.html",
+      "date_published": "2026-10-18T15:00:42.185566+00:00"
+    },
+    {
       "id": "92dd358e97b64f48b684747fc44ea9de",
       "title": "Nearly all Moby bikes in Dublin were classified as general-use, but one in six location readings fell outside normal geographic bounds",
       "summary": "Nearly all Moby bikes in Dublin were classified as general-use, but one in six location readings fell outside normal geographic bounds",
