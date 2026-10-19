@@ -3,6 +3,13 @@
   "title": "Ireland Open Data Analyst",
   "items": [
     {
+      "id": "a3442f17059d415e971852bc555d49aa",
+      "title": "86% of Irish bathing waters achieved Excellent quality, with Mayo hosting over a quarter of all monitored sites",
+      "summary": "86% of Irish bathing waters achieved Excellent quality, with Mayo hosting over a quarter of all monitored sites",
+      "url": "reports/2026-10-19-bathing-water-api.html",
+      "date_published": "2026-10-19T12:22:44.073627+00:00"
+    },
+    {
       "id": "1ee77a5e86dd44cbaee473dbc8f601bb",
       "title": "Pedestrian counters outnumber cycling-only sensors by more than two to one across Dublin's monitoring network",
       "summary": "Pedestrian counters outnumber cycling-only sensors by more than two to one across Dublin's monitoring network",
